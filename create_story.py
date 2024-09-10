@@ -1,4 +1,4 @@
-from langchain_openai import OpenAI
+from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain_core.prompts import FewShotPromptTemplate
 import random
@@ -23,7 +23,7 @@ hf_key = os.getenv("HF_token")
 
 
 def generate_script(temperature, keyword):
-    llm = OpenAI(model="gpt-4o-mini",api_key=api_key, temperature=temperature)
+    llm = ChatOpenAI(model="gpt-4o-mini",api_key=api_key, temperature=temperature)
     initial_prompt = f"Write a suspenseful short story with fictional characters talking about {keyword} and give it a title. The story should be broken down into a 30-second timeline with time codes at every 5-second interval (except for the last part). Focus on building tension gradually, starting with a mysterious setting, followed by an unsettling event, and culminating in a cliffhanger. The tone should be eerie and the pacing should accelerate towards the end. Use vivid sensory details to enhance the suspense.\nHere's a 30-second short suspenseful story:"
 
 
@@ -73,7 +73,7 @@ def parse_script(script):
     return title, timeline
 
 def generate_image_generation_prompt(timeline_event):
-    llm = OpenAI(model="gpt-4o-mini",api_key=api_key)
+    llm = ChatOpenAI(model="gpt-4o-mini",api_key=api_key)
     """Generates an image generation prompt based on the timeline event."""
     initial_prompt = f"Generate one sentence that summarizes the following event, the sentence will be used as a caption to describe an image related to the event, avoid talking about texts and discussions, if the event is a discussion try to describe the persons talking as best as you can:\n{timeline_event}\nHere is the description sentence:"
     example_prompt = PromptTemplate.from_template("Generate one sentence that summarizes the following event, the sentence will be used as a caption to describe an image related to the event:\n{example_event}\nHere is the description sentence: {completion}")
@@ -137,7 +137,7 @@ temperature = random.uniform(0.5, 1.0)
 print(f"Generating a suspenseful short story about {keyword} with a temperature of {temperature}...")
 script = generate_script(temperature, keyword)
 print("Script generated successfully!")
-title, timeline = parse_script(script)
+title, timeline = parse_script(script.content)
 title = title.replace('"',"")
 os.makedirs(title, exist_ok=True)
 # save the title and the timeline in a text file
@@ -149,7 +149,7 @@ now = datetime.datetime.now()
 i=0
 for event in timeline:
     image_prompt = generate_image_generation_prompt(event)
-    generate_image(image_prompt,title)
+    generate_image(image_prompt.content,title)
     tts(event.replace("..."," "),voice,f"{title}/{i}.mp3",False)
     print("Image and voice generated successfully!")
     i+=1
