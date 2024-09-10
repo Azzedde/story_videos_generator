@@ -122,53 +122,6 @@ def generate_image(image_prompt, title):
 
 
 
-# def get_soundeffect(keyword, title):
-#     """Downloads a sound effect from Freesound based on a keyword."""
-#     client = freesound.FreesoundClient()
-#     client.set_token("0kbUjvuEPiwhUsPjSEigezFZjweORZ2CoZaBxoGo","token")
-#     results = client.text_search(query=keyword,fields="id,name,previews")
-#     save_path = f'./{title}/{results[0].name}.mp3'
-#     print(save_path)
-#     print(results[0].name)
-#     results[0].retrieve_preview(f"./{title}/",results[0].name+".mp3")
-#     return save_path
-
-# def generate_sound_effect_prompt(event):
-#     llm = OllamaLLM(model="llama3.1", device="cuda", temperature=0.1)
-#     """Generates a sound effect generation prompt based on the timeline event."""
-#     initial_prompt = f"Generate a sentence that describes the most suitable sound effect of following event:\n{event}\nHere is the sound effect:"
-#     example_prompt = PromptTemplate.from_template("Generate a sentence that describes the most suitable sound effect of following event:\n{example_event}\nHere is the sound effect: {completion}")
-#     example = [
-#         {"example_event":"Professor Emma Taylor stood at the edge of the dense jungle, her eyes scanning the underbrush for any sign of movement. The air was thick with the sounds of insects and animals, but one creature in particular had been rumored to inhabit this terrain: the legendary Kala Serpent.",
-#         "completion":"wild jungle sounds"},
-#         {"example_event":"...and Emma's heart skipped a beat as she caught sight of a massive serpent slithering through the underbrush. Its scales glistened in the dappled light, and its eyes seemed to gleam with an otherworldly intelligence.",
-#          "completion": "snake hissing"},
-#          {"example_event":"Renowned journalist, Emma Taylor, sat in her dimly lit office, surrounded by stacks of dusty papers and old typewriters. She stared at an antique pen lying on her desk, its intricate design glinting in the faint light. The air was thick with the scent of old books and dust.", 
-#           "completion":"library ambience"},
-#         {"example_event":"Emily opened the book, releasing a faint scent of old parchment and forgotten knowledge. As she began to read, the words seemed to shift on the page, like living, breathing creatures.",
-#          "completion":"reading through a book"}
-#     ]
-#     prompt = FewShotPromptTemplate(
-#         examples=example,
-#         example_prompt=example_prompt,
-#         suffix="{input}",
-#         input_variables=["input"],
-#     )
-
-#     message = llm.invoke(prompt.invoke({"input": initial_prompt}).to_string())
-    
-#     return message
-
-# def generate_sound_effect(sound_effect_prompt, title, duration):
-#     """Generates a sound effect based on the sound effect prompt."""
-#     client = Client("https://fffiloni-audiogen.hf.space/--replicas/vd9sp/")
-#     result = client.predict(
-#             sound_effect_prompt,	# str  in 'audio prompt' Textbox component
-#             6,	# float (numeric value between 5 and 10) in 'Duration' Slider component
-#             api_name="/infer"
-#     )
-#     result.save(f"./{title}/sound_effect.mp3")
-
 voices = ['en_us_001',                  # English US - Female (Int. 1)
     'en_us_002',                  # English US - Female (Int. 2)
     'en_us_006',                  # English US - Male 1
